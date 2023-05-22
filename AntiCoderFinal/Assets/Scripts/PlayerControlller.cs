@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerControlller : MonoBehaviour
 {
     public float speed = 0;
+    public TextMeshProUGUI countText;
+    public GameObject winTextObject;
     private Rigidbody rb;
     private int count;
     private float movementX;
@@ -16,6 +19,8 @@ public class PlayerControlller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        SetCountText();
+        winTextObject.SetActive(false);
     }
 
     private void OnMove(InputValue movementValue)
@@ -24,6 +29,15 @@ public class PlayerControlller : MonoBehaviour
 
         movementX = movementVector.x;
         movementY = movementVector.y;
+    }
+
+    void SetCountText()
+    {
+        countText.text = "Count: " + count.ToString();
+        if(count >= 10)
+        {
+            winTextObject.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
@@ -38,6 +52,8 @@ public class PlayerControlller : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             count = count + 1;
+
+            SetCountText();
         }
     }
 }
